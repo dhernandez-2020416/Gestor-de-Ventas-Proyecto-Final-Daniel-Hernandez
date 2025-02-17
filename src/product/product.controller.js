@@ -55,6 +55,15 @@ export const udpateProduct = async(req, res) => {
 
         const product = await Product.findById(idProduct)
 
+        if(!product){
+            return res.status(404).send(
+                {
+                    success: false,
+                    message: 'Product not found'
+                }
+            )
+        }
+
         if(product.status == false){
             return res.status(404).send(
                 {
@@ -88,15 +97,6 @@ export const udpateProduct = async(req, res) => {
                 new: true
             }
         )
-
-        if(!updateProduct){
-            return res.status(404).send(
-                {
-                    success: false,
-                    message: 'Product not found'
-                }
-            )
-        }
 
         return res.send(
             {
