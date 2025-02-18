@@ -106,7 +106,7 @@
 							"urlencoded": [
 								{
 									"key": "identifier",
-									"value": "rgalindo",
+									"value": "dhernandez",
 									"type": "text"
 								},
 								{
@@ -566,7 +566,7 @@
 									]
 								},
 								"url": {
-									"raw": "http://localhost:3700/v1/product/updateProduct/67af605c85b75f4c4cfba668",
+									"raw": "http://localhost:3700/v1/product/updateProduct/67af606d85b75f4c4cfba670",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -576,7 +576,7 @@
 										"v1",
 										"product",
 										"updateProduct",
-										"67af605c85b75f4c4cfba668"
+										"67af606d85b75f4c4cfba670"
 									]
 								}
 							},
@@ -659,6 +659,238 @@
 										"v1",
 										"product",
 										"getProductOutOfStock"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Create User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Julian",
+											"type": "text"
+										},
+										{
+											"key": "surname",
+											"value": "Rivas",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "jrivas",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "jrivas@kinal.edu.gt",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "21342@Af",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "ADMIN",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "false",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "shoppingCarts",
+											"value": "sadfsadfa",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3700/v1/user/createUserByAdmin",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3700",
+									"path": [
+										"v1",
+										"user",
+										"createUserByAdmin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update User",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Ricardinho",
+											"type": "text"
+										},
+										{
+											"key": "surname",
+											"value": "Galandinho",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "rgalandinho@kinal.edu.gt",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "rgalandinho",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "phone",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "role",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "shoppingCarts",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3700/v1/user/updateUserByAdmin/67b276270b0786837b9707bf",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3700",
+									"path": [
+										"v1",
+										"user",
+										"updateUserByAdmin",
+										"67b276270b0786837b9707bf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Role",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "role",
+											"value": "ADMIN",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3700/v1/user/updateRoleByAdmin/67b276270b0786837b9707bf",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3700",
+									"path": [
+										"v1",
+										"user",
+										"updateRoleByAdmin",
+										"67b276270b0786837b9707bf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3700/v1/user/deleteUserByAdmin/67b3dd9b4511df7486c89133",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3700",
+									"path": [
+										"v1",
+										"user",
+										"deleteUserByAdmin",
+										"67b3dd9b4511df7486c89133"
 									]
 								}
 							},

@@ -188,7 +188,7 @@ export const udpateUserByAdmin = async(req, res) => {
 
 export const udpateRoleByAdmin = async(req, res) => {
     try {
-        const { userId } = req.params
+        const { userId } = req.paramsz
         const { role } = req.body
 
         const user = await User.findById(userId)
@@ -256,7 +256,7 @@ export const udpateRoleByAdmin = async(req, res) => {
 
 export const deleteUserByAdmin = async (req, res) => {
     try {
-        const userId = req.params
+        const { userId } = req.params
 
         const user = await User.findById(userId)
         
