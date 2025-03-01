@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { validateJwt, verifyAdminRole, verifyClientRole } from '../../middlewares/validate.jwt.js'
 import { createUserByAdmin, deleteUser, deleteUserByAdmin, udpateRoleByAdmin, udpateUserByAdmin, updatePassword, updateUser } from './user.controller.js'
-import { createUserByAdminValidator, deleteUserValidator, udpateUserByAdminValidator, updatePasswordValidator, updateRoleByAdminValidator, updateUserValidator } from '../../helpers/validators.js'
+import { createUserByAdminValidator, deleteUserByAdminValidator, deleteUserValidator, udpateUserByAdminValidator, updatePasswordValidator, updateRoleByAdminValidator, updateUserValidator } from '../../helpers/validators.js'
 
 const api = Router()
 
@@ -69,7 +69,8 @@ api.delete(
     '/deleteUserByAdmin/:userId',
     [
         validateJwt,
-        verifyAdminRole
+        verifyAdminRole,
+        deleteUserByAdminValidator
     ],
     deleteUserByAdmin
 )
