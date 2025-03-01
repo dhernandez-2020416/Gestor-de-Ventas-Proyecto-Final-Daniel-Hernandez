@@ -1,28 +1,35 @@
 import User from '../user/user.model.js'
 import { encrypt, checkPassword } from '../../utils/encrypt.js'
 import { generateJwt } from '../../utils/jwt.js'
+import ShoppingCart from '../shoppingCart/shoppingCart.model.js'
 
-export const registerUser = async(req, res) => {
-    try{
+export const registerUser = async (req, res) => {
+    try {
         const data = req.body
 
-        let user = new User(data)
-        
-        user.password = await encrypt(data.password)
+        data.password = await encrypt(data.password)
 
-        user.role = 'CLIENT'
+        data.role = 'CLIENT'
+
+        let user = new User(data)
+
+        const shoppingCart = new ShoppingCart({ user: user._id, products: [] })
+        await shoppingCart.save()
+
+        user.shoppingCart = shoppingCart._id
 
         await user.save()
 
         return res.send(
             {
                 success: true,
-                message: `User registered succesfully, can be logged with username: ${user.username}`
+                message: 'User registered successfully',
+                user
             }
         )
-    }catch(err){
+    } catch (err) {
         console.error(err)
-        return res.status(500).send({message: 'General error'})
+        return res.status(500).send({ message: 'General error' })
     }
 }
 
@@ -71,6 +78,11 @@ export const loginUser = async (req, res) => {
         })
     } catch (err) {
         console.error(err);
-        return res.status(500).send({ message: 'General error' })
+        return res.status(500).send(
+            { 
+                success: false,
+                message: 'General error' 
+            }
+        )
     }
 }
