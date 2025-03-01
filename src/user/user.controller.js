@@ -1,5 +1,6 @@
 import { checkPassword, encrypt } from '../../utils/encrypt.js'
 import User from './user.model.js'
+import ShoppingCart from '../shoppingCart/shoppingCart.model.js'
 
 export const updateUser = async(req, res) =>{
     try {
@@ -107,6 +108,11 @@ export const createUserByAdmin = async(req, res) => {
         const { name, surname, username, email, password, phone, role } = req.body
 
         const user = new User({ name, surname, username, email, password, phone, role })
+
+        const shoppingCart = new ShoppingCart({ user: user._id, products: [] })
+                await shoppingCart.save()
+        
+                user.shoppingCart = shoppingCart._id
 
         await user.save()
 
@@ -257,6 +263,29 @@ export const udpateRoleByAdmin = async(req, res) => {
 export const deleteUserByAdmin = async (req, res) => {
     try {
         const { userId } = req.params
+        const { password } = req.body
+        const adminId = req.user.id
+
+        const admin = await User.findById(adminId)
+
+        if (!admin) {
+            return res.status(403).send(
+                {
+                    success: false,
+                    message: 'Unauthorized'
+                }
+            )
+        }
+
+        const isMatch = await checkPassword(password, admin.password)
+        if (!isMatch) {
+            return res.status(400).send(
+                {
+                    success: false,
+                    message: 'Wrong password'
+                }
+            )
+        }
 
         const user = await User.findById(userId)
         
@@ -265,6 +294,15 @@ export const deleteUserByAdmin = async (req, res) => {
                 {
                     success: false,
                     message: 'User not found'
+                }
+            )
+        }
+
+        if(user.role == 'ADMIN'){
+            return res.status(403).send(
+                {
+                    success: false,
+                    message: 'You cannot delete admins'
                 }
             )
         }
