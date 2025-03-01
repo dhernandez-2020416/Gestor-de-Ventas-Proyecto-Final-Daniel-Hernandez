@@ -7,13 +7,20 @@ export const createProduct = async (req, res) => {
 
         const existingCategory = await Category.findById(category)
         if (!existingCategory) {
-            return res.status(404).send({
-                success: false,
-                message: 'Category not found'
-            })
+            return res.status(404).send(
+                {
+                    success: false,
+                    message: 'Category not found'
+                }
+            )
         }
 
-        const existingProduct = await Product.findOne({ name: req.body.name })
+        const existingProduct = await Product.findOne(
+            { 
+                name: name.toLowerCase(),
+                status: true
+            }
+        )
         
         if (existingProduct) {
             return res.status(400).send(
@@ -24,7 +31,15 @@ export const createProduct = async (req, res) => {
             )
         }
 
-        const product = new Product({ name, description, price, stock, category })
+        const product = new Product(
+            { 
+                name: name.toLowerCase(), 
+                description, 
+                price, 
+                stock, 
+                category 
+            }
+        )
         await product.save()
 
         existingCategory.products.push(product._id)
@@ -107,7 +122,7 @@ export const udpateProduct = async(req, res) => {
         )
     } catch (err) {
         console.error(err)
-        res.status(500).send(
+        return res.status(500).send(
             {
                 success: false,
                 message: 'General error'
@@ -129,7 +144,7 @@ export const getProducts = async(req, res) =>{
         )
     } catch (err) {
         console.error(err)
-        res.status(500).send(
+        return res.status(500).send(
             {
                 success: false,
                 message: 'General error'
@@ -177,7 +192,7 @@ export const deleteProduct = async (req, res) => {
         )
     } catch (err) {
         console.error(err)
-        res.status(500).send(
+        return res.status(500).send(
             {
                 success: false,
                 message: 'General error'
@@ -195,6 +210,83 @@ export const getProductsOutOfStock = async(req, res) => {
                 success: true,
                 message: 'Products out of stock:',
                 products
+            }
+        )
+    } catch (err) {
+        console.error(err)
+        return res.status(500).send(
+            {
+                success: false,
+                message: 'General error'
+            }
+        )
+    }
+}
+
+export const getPopularProducts = async(req, res) => {
+    try {
+        const products = await Product.find({ status: true })
+            .sort(
+                { 
+                    sale: -1 
+                }
+            )
+            .populate(
+                {
+                    path: 'category',
+                    select: '-_id name description'
+                }
+            )
+        
+        return res.send(
+            {
+                success: true,
+                message: 'Popular products sorted by sales',
+                products
+            }
+        )
+    } catch (err) {
+        console.error(err)
+        return res.status(500).send(
+            {
+                success: false,
+                message: 'General error'
+            }
+        )
+    }
+}
+
+export const getOneProduct = async(req, res) => {
+    try {
+        const { name } = req.body
+
+        const product = await Product.findOne(
+            { 
+                name: name.toLowerCase(), 
+                status: true 
+            }    
+        )
+        .populate(
+            {
+                path: 'category',
+                select: 'name description'
+            }
+        )
+
+        if(!product){
+            return res.status(404).send(
+                {
+                    success: false,
+                    message: 'Product not found'
+                }
+            )
+        }
+
+        return res.send(
+            {
+                success: true,
+                message: 'Product found',
+                product
             }
         )
     } catch (err) {
