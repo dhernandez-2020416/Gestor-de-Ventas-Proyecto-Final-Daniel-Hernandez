@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { validateJwt, verifyAdminRole } from '../../middlewares/validate.jwt.js'
-import { createCategory, deleteCategory, getCategories, updateCategory } from './category.controller.js'
-import { createCategoryValidator, updateCategoryValidator } from '../../helpers/validators.js'
+import { createCategory, deleteCategory, getCategories, getOneCategory, updateCategory } from './category.controller.js'
+import { createCategoryValidator, getOneProductValidator, updateCategoryValidator } from '../../helpers/validators.js'
 import { verify } from 'argon2'
 
 const api = Router()
@@ -19,8 +19,7 @@ api.post(
 api.get(
     '/getCategories',
     [
-        validateJwt,
-        verifyAdminRole
+        validateJwt
     ],
     getCategories
 )
@@ -42,6 +41,15 @@ api.delete(
         verifyAdminRole
     ],
     deleteCategory
+)
+
+api.get(
+    '/getCategory',
+    [
+        validateJwt,
+        getOneProductValidator
+    ],
+    getOneCategory
 )
 
 export default api
