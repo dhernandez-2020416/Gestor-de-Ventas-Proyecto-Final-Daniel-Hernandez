@@ -4,9 +4,14 @@ import Product from '../product/product.model.js'
 export const createCategory = async(req, res) =>{
     try {
         const { name, description } = req.body
-        const category =  new Category({ name, description })
+        const category =  new Category(
+            { 
+                name: name.toLowerCase(), 
+                description 
+            }
+        )
 
-        const existingCategory = await Category.findOne({ name: name })
+        const existingCategory = await Category.findOne({ name: name.toLowerCase() })
 
         if(existingCategory){
             return res.status(400).send(
@@ -28,7 +33,7 @@ export const createCategory = async(req, res) =>{
         )
     } catch (err) {
         console.error(err)
-        res.status(500).send(
+        return res.status(500).send(
             {
                 success: false,
                 message: 'General error'
@@ -57,7 +62,7 @@ export const getCategories = async(req, res) =>{
         )
     } catch (err) {
         console.error(err)
-        res.status(500).send(
+        return res.status(500).send(
             {
                 success: false,
                 message: 'General error'
@@ -115,16 +120,18 @@ export const deleteCategory = async (req, res) => {
         const category = await Category.findById(idCategory)
         
         if (!category) {
-            return res.status(404).send({
-                success: false,
-                message: 'Category not found'
-            })
+            return res.status(404).send(
+                {
+                    success: false,
+                    message: 'Category not found'
+                }
+            )
         }
         
-        let defaultCategory = await Category.findOne({ name: 'Uncategorized' })
+        let defaultCategory = await Category.findOne({ name: 'uncategorized' })
         
         if (!defaultCategory) {
-            defaultCategory = new Category({ name: 'Uncategorized', description: 'Default category', products: [] })
+            defaultCategory = new Category({ name: 'uncategorized', description: 'Default category', products: [] })
             await defaultCategory.save()
         }
         
@@ -141,16 +148,63 @@ export const deleteCategory = async (req, res) => {
         
         await Category.findByIdAndDelete(idCategory)
         
-        res.send({
-            success: true,
-            message: 'Category deleted successfully',
-            productsReassigned: productsInCategory.length
-        })
-    } catch (error) {
-        console.error('Error deleting category:', error)
-        res.status(500).send({
-            success: false,
-            message: 'General error'
-        })
+        return res.send(
+            {
+                success: true,
+                message: 'Category deleted successfully',
+                productsReassigned: productsInCategory.length
+            }
+        )
+    } catch (err) {
+        console.error(err)
+        return res.status(500).send(
+            {
+                success: false,
+                message: 'General error'
+            }
+        )
+    }
+}
+
+export const getOneCategory = async(req, res) => {
+    try {
+        const { name } = req.body
+
+        const category = await Category.findOne(
+            {
+                name: name.toLowerCase()
+            }
+        )
+        .populate(
+            {
+                path: 'products',
+                select: 'name description price'
+            }
+        )
+
+        if(!category){
+            return res.status(404).send(
+                {
+                    success: false,
+                    message: 'Category not found'
+                }
+            )
+        }
+
+        return res.send(
+            {
+                success: true,
+                message: 'Category found',
+                category
+            }
+        )
+    } catch (err) {
+        console.error(err)
+        return res.status(500).send(
+            {
+                success: false,
+                message: 'General error'
+            }
+        )
     }
 }
