@@ -230,3 +230,15 @@ export const updateRoleByAdminValidator = [
         .withMessage('Role must be valid'),
     validateErrors
 ]
+
+export const deleteUserByAdminValidator = [
+    body('password', 'Password cannot be empty')
+        .notEmpty(),
+    validateErrors
+]
+
+export const getOneProductValidator = [
+    body('name', 'Name cannot be empty')
+        .notEmpty(),
+    validateErrors
+]
