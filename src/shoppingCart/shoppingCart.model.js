@@ -33,11 +33,6 @@ const shoppingCartSchema = new Schema(
             type: Number,
             required: true,
             default: 0
-        },
-        status: {
-            type: String,
-            enum: ['PENDING', 'CHECKOUT'],
-            default: 'PENDING'
         }
     }
 )
