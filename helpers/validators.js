@@ -242,3 +242,32 @@ export const getOneProductValidator = [
         .notEmpty(),
     validateErrors
 ]
+
+export const addProductToShoppingCartValidator = [
+    body('product', 'Product cannot be empty')
+        .notEmpty()
+        .custom(objectIdValid),
+    body('quantity', 'Quantity cannot be empty')
+        .notEmpty()
+        .isInt({ min: 1 })
+        .withMessage('Quantity must be a positive integer greater than 0'),
+    validateErrors
+]
+
+export const deleteProductOfShoppingCartValidator = [
+    body('product', 'Product cannot be empty')
+        .notEmpty()
+        .custom(objectIdValid),
+    validateErrors
+]
+
+export const updateInvoiceOfUserValidator = [
+    body('product', 'Product cannot be empty')
+        .notEmpty()
+        .custom(objectIdValid),
+    body('quantity', 'Quantity cannot be empty')
+        .notEmpty()
+        .isInt({ min: 1 })
+        .withMessage('Quantity must be a positive integer greater than 0'),
+    validateErrors
+]
