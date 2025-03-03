@@ -19,22 +19,21 @@ const shoppingCartSchema = new Schema(
                     required: true,
                     min: 1
                 },
-                price: {
-                    type: Number,
-                    required: true
-                },
-                total: {
-                    type: Number,
-                    required: true
+                subTotal: {
+                    type: Number
                 }
             }
         ],
         totalAmount: {
             type: Number,
-            required: true,
             default: 0
         }
     }
 )
 
-export default model('ShoppingCart', shoppingCartSchema);
+shoppingCartSchema.methods.toJSON = function() {
+    const { __v, user, ...shoppingCart } = this.toObject()
+    return shoppingCart
+}
+
+export default model('ShoppingCart', shoppingCartSchema)
