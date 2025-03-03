@@ -17,8 +17,7 @@ export const createProduct = async (req, res) => {
 
         const existingProduct = await Product.findOne(
             { 
-                name: name.toLowerCase(),
-                status: true
+                name: name.toLowerCase()
             }
         )
         
