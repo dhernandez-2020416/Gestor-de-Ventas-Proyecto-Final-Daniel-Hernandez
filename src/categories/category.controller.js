@@ -44,6 +44,7 @@ export const createCategory = async(req, res) =>{
 
 export const getCategories = async(req, res) =>{
     try {
+        const { limit = 20, skip = 0 } = req.query
         const categories = await Category.find()
         .populate(
             {
@@ -52,6 +53,8 @@ export const getCategories = async(req, res) =>{
                 match: { status: true }
             }
         )
+        .skip(skip)
+        .limit(limit)
 
         return res.send(
             {
