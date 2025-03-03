@@ -133,7 +133,10 @@ export const udpateProduct = async(req, res) => {
 
 export const getProducts = async(req, res) =>{
     try {
+        const { limit = 20, skip = 0 } = req.query
         const products = await Product.find({ status: true }).populate('category', '_id name description')
+            .skip(skip)
+            .limit(limit)
 
         return res.send(
             {
@@ -203,7 +206,10 @@ export const deleteProduct = async (req, res) => {
 
 export const getProductsOutOfStock = async(req, res) => {
     try {
+        const { limit = 20, skip = 0 } = req.query
         const products = await Product.find({ stock: 0, status: true }).populate('category', '_id name description')
+            .skip(skip)
+            .limit(limit)
 
         return res.send(
             {
@@ -225,6 +231,7 @@ export const getProductsOutOfStock = async(req, res) => {
 
 export const getPopularProducts = async(req, res) => {
     try {
+        const { limit = 20, skip = 0 } = req.query
         const products = await Product.find({ status: true })
             .sort(
                 { 
@@ -237,6 +244,8 @@ export const getPopularProducts = async(req, res) => {
                     select: '-_id name description'
                 }
             )
+            .skip(skip)
+            .limit(limit)
         
         return res.send(
             {
